@@ -225,7 +225,7 @@ public class SkyblockerConfigModel {
 
     public static class DwarvenHud {
         public boolean enabled = true;
-        public boolean enableBackground = true;
+        public Backgrounds background = Backgrounds.TRANSLUCENT;
         public int x = 10;
         public int y = 10;
     }
@@ -234,5 +234,12 @@ public class SkyblockerConfigModel {
         PURSE,
         BITS,
         LOCATION
+    }
+
+    public enum Backgrounds {
+        PANEL,
+        DARK_PANEL,
+        TRANSLUCENT,
+        NONE
     }
 }

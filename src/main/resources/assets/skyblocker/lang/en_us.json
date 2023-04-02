@@ -82,7 +82,11 @@
   "text.config.skyblocker.option.dwarvenMines.solvePuzzler": "Solve Puzzler Puzzle",
   "text.config.skyblocker.category.dwarvenMines.dwarvenHud": "Dwarven HUD",
   "text.config.skyblocker.option.dwarvenMines.dwarvenHud.enabled": "Enabled",
-  "text.config.skyblocker.option.dwarvenMines.dwarvenHud.enableBackground": "Enable Background",
+  "text.config.skyblocker.option.dwarvenMines.dwarvenHud.background": "Background",
+  "text.config.skyblocker.enum.backgrounds.panel": "Panel",
+  "text.config.skyblocker.enum.backgrounds.dark_panel": "Dark Panel",
+  "text.config.skyblocker.enum.backgrounds.translucent": "Translucent",
+  "text.config.skyblocker.enum.backgrounds.none": "None",
   "text.config.skyblocker.option.dwarvenMines.dwarvenHud.x": "X",
   "text.config.skyblocker.option.dwarvenMines.dwarvenHud.y": "Y",
 

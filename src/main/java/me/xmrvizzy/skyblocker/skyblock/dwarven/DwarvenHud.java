@@ -11,6 +11,7 @@ import io.wispforest.owo.ui.core.Surface;
 import io.wispforest.owo.ui.hud.Hud;
 import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.config.SkyblockerGuiConfigScreen;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -30,7 +31,7 @@ public class DwarvenHud {
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final Identifier HUD_ID = new Identifier(SkyblockerMod.NAMESPACE, "dwarven_hud");
     public static List<Commission> commissionList = new ArrayList<>();
-    public static Text commissionListText = Text.empty();
+    public static MutableText commissionText = Text.empty();
 
 
     public static final List<Pattern> COMMISSIONS = Stream.of(
@@ -51,10 +52,17 @@ public class DwarvenHud {
 
     public static void init() {
         Hud.add(new Identifier(SkyblockerMod.NAMESPACE, "dwarven_hud"), () -> Containers.verticalFlow(Sizing.content(), Sizing.content()).positioning(Positioning.absolute(SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.x(), SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.y())));
+        HudRenderCallback.EVENT.register((matrices, tickDelta) -> {
+            if (commissionText.equals(Text.empty()) || client.options.debugEnabled || client.currentScreen instanceof SkyblockerGuiConfigScreen) {
+                FlowLayout hud = (FlowLayout) Hud.getComponent(HUD_ID);
+                if (hud != null)
+                    hud.clearChildren().surface(Surface.BLANK);
+            }
+        });
     }
     public static void update() {
         commissionList = new ArrayList<>();
-        MutableText commissionText = Text.empty();
+        commissionText = Text.empty();
         FlowLayout hud = (FlowLayout) Hud.getComponent(HUD_ID);
         if (client.player == null || !SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.enabled()) return;
 
@@ -75,17 +83,10 @@ public class DwarvenHud {
             if (commissionList.size() != commissionList.indexOf(commission) + 1)
                 commissionText.append("\n");
         }
-        if (commissionText.equals(Text.empty()) || client.options.debugEnabled || client.currentScreen instanceof SkyblockerGuiConfigScreen) {
-            hud.clearChildren().surface(Surface.BLANK);
-            return;
-        }
 
         hud.positioning(Positioning.absolute(SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.x(), SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.y())).padding(Insets.of(10));
 
-        if (SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.enableBackground())
-            hud.surface(Surface.PANEL);
-        else
-            hud.surface(Surface.BLANK);
+        hud.surface(getSurface());
 
         hud.clearChildren();
         hud.child(Components.label(commissionText).id("commission_hud_text"));
@@ -101,6 +102,15 @@ public class DwarvenHud {
 
     public static MutableText styleCommissionText(Commission commission) {
         return Text.literal(commission.commission).styled(style -> style.withColor(Formatting.AQUA)).append(Text.literal(": " + commission.progression).styled(style -> style.withColor(Formatting.GREEN)));
+    }
+
+    public static Surface getSurface() {
+        return switch (SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.background()) {
+            case NONE -> Surface.BLANK;
+            case PANEL -> Surface.PANEL;
+            case DARK_PANEL -> Surface.DARK_PANEL;
+            case TRANSLUCENT -> Surface.VANILLA_TRANSLUCENT;
+        };
     }
 
     public static class Commission{

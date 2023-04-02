@@ -29,7 +29,7 @@ public class SkyblockerGuiConfigScreen extends BaseOwoScreen<FlowLayout> {
                         Sizing.content(),
                         DwarvenHud.getExampleComponent()
                 )
-                        .surface(Surface.PANEL)
+                        .surface(DwarvenHud.getSurface())
                         .id("dwarven-hud-config")
                         .positioning(
                                 Positioning.absolute(
@@ -46,6 +46,7 @@ public class SkyblockerGuiConfigScreen extends BaseOwoScreen<FlowLayout> {
         // Dwarven HUD
         SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.x(this.uiAdapter.rootComponent.childById(DraggableContainer.class, "dwarven-hud-config").x());
         SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.y(this.uiAdapter.rootComponent.childById(DraggableContainer.class, "dwarven-hud-config").y());
+        DwarvenHud.update();
 
         SkyblockerMod.getInstance().config.save();
     }
