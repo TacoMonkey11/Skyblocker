@@ -2,7 +2,6 @@ package me.xmrvizzy.skyblocker;
 
 import io.wispforest.owo.config.ui.ConfigScreen;
 import me.xmrvizzy.skyblocker.chat.ChatMessageListener;
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
 import me.xmrvizzy.skyblocker.config.SkyblockerConfigScreen;
 import me.xmrvizzy.skyblocker.discord.DiscordRPCManager;
 import me.xmrvizzy.skyblocker.skyblock.HotbarSlotLock;
@@ -19,7 +18,6 @@ public class SkyblockerInitializer implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         HotbarSlotLock.init();
-        SkyblockerConfigOld.init();
         PriceInfoTooltip.init();
         WikiLookup.init();
         ItemRegistry.init();
