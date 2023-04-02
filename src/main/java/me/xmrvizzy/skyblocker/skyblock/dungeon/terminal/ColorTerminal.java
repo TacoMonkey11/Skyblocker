@@ -1,12 +1,11 @@
 package me.xmrvizzy.skyblocker.skyblock.dungeon.terminal;
 
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
+import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.container.ColorHighlight;
 import me.xmrvizzy.skyblocker.container.ContainerSolver;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-// import net.minecraft.registry.Registry;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -29,7 +28,7 @@ public class ColorTerminal extends ContainerSolver {
     @Override
     public boolean isEnabled() {
         targetColor = null;
-        return SkyblockerConfigOld.get().locations.dungeons.terminals.solveColor;
+        return SkyblockerMod.getInstance().config.dungeons.terminals.solveColor();
     }
 
     @Override

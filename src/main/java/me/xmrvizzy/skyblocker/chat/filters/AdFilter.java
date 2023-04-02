@@ -1,8 +1,8 @@
 package me.xmrvizzy.skyblocker.chat.filters;
 
+import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.chat.ChatFilterResult;
 import me.xmrvizzy.skyblocker.chat.ChatPatternListener;
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
 import net.minecraft.text.Text;
 
 import java.util.regex.Matcher;
@@ -33,6 +33,6 @@ public class AdFilter extends ChatPatternListener {
 
     @Override
     protected ChatFilterResult state() {
-        return SkyblockerConfigOld.get().messages.hideAds;
+        return SkyblockerMod.getInstance().config.hideAds();
     }
 }

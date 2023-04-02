@@ -1,6 +1,6 @@
 package me.xmrvizzy.skyblocker.skyblock.dwarven;
 
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
+import me.xmrvizzy.skyblocker.SkyblockerMod;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -49,14 +49,14 @@ public class DwarvenHud {
                                 })))));
 
         HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
-            if (!SkyblockerConfigOld.get().locations.dwarvenMines.dwarvenHud.enabled || client.player == null || commissionList.isEmpty()) return;
-            render(matrixStack, SkyblockerConfigOld.get().locations.dwarvenMines.dwarvenHud.x, SkyblockerConfigOld.get().locations.dwarvenMines.dwarvenHud.y, commissionList);
+            if (!SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.enabled() || client.player == null || commissionList.isEmpty()) return;
+            render(matrixStack, SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.x(), SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.y(), commissionList);
         });
     }
 
     public static void render(MatrixStack matrixStack, int hudX, int hudY, List<Commission> commissions) {
         if (commissions.size() > 0){
-            if (SkyblockerConfigOld.get().locations.dwarvenMines.dwarvenHud.enableBackground)
+            if (SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.enableBackground())
                 DrawableHelper.fill(matrixStack, hudX, hudY, hudX + 200, hudY + (20 * commissions.size()), 0x64000000);
             int y = 0;
             for (Commission commission : commissions) {
@@ -68,7 +68,7 @@ public class DwarvenHud {
 
     public static void update() {
         commissionList = new ArrayList<>();
-        if (client.player == null || !SkyblockerConfigOld.get().locations.dwarvenMines.dwarvenHud.enabled) return;
+        if (client.player == null || !SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.enabled()) return;
 
         client.getNetworkHandler().getPlayerList().forEach(playerListEntry -> {
             if (playerListEntry.getDisplayName() != null) {

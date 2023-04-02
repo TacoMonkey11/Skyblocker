@@ -1,6 +1,6 @@
 package me.xmrvizzy.skyblocker.skyblock.dungeon.terminal;
 
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
+import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.container.ColorHighlight;
 import me.xmrvizzy.skyblocker.container.ContainerSolver;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ public class OrderTerminal extends ContainerSolver {
     public boolean isEnabled() {
         orderedSlots = null;
         currentNum = 0;
-        return SkyblockerConfigOld.get().locations.dungeons.terminals.solveOrder;
+        return SkyblockerMod.getInstance().config.dungeons.terminals.solveOrder();
     }
 
     @Override

@@ -1,19 +1,15 @@
 package me.xmrvizzy.skyblocker.skyblock.dungeon;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-
+import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.chat.ChatFilterResult;
 import me.xmrvizzy.skyblocker.chat.ChatPatternListener;
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+
+import java.util.*;
+import java.util.regex.Matcher;
 
 public class Trivia extends ChatPatternListener {
     private static final Map<String, String[]> answers;
@@ -25,7 +21,7 @@ public class Trivia extends ChatPatternListener {
 
     @Override
     public ChatFilterResult state() {
-        return SkyblockerConfigOld.get().locations.dungeons.solveTrivia ? ChatFilterResult.FILTER : ChatFilterResult.PASS;
+        return SkyblockerMod.getInstance().config.dungeons.solveTrivia() ? ChatFilterResult.FILTER : ChatFilterResult.PASS;
     }
 
     @Override

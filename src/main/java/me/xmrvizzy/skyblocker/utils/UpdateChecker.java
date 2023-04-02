@@ -1,11 +1,12 @@
 package me.xmrvizzy.skyblocker.utils;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import me.xmrvizzy.skyblocker.SkyblockerMod;
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.*;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.util.VersionNumber;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class UpdateChecker {
     public static VersionNumber localVersion = null;
     public static VersionNumber latestVersion = null;
     public static boolean shouldUpdate(){
-        if (SkyblockerConfigOld.get().general.enableUpdateNotification){
+        if (SkyblockerMod.getInstance().config.enableUpdateNotification()){
             new Thread(() -> {
                 try{
                     URL url = new URL("https://api.modrinth.com/v2/project/skyblocker-liap/version");
@@ -51,13 +52,7 @@ public class UpdateChecker {
     public static void init(){
         SkyblockEvents.JOIN.register(() -> {
             if (shouldUpdate()) {
-                MutableText linkMessage = Text.translatable("skyblocker.update.update_message");
-                MutableText linkMessageEnding = Text.translatable("skyblocker.update.update_message_end");
-                MutableText link = Text.translatable("skyblocker.update.update_link");
-                MutableText hoverText = Text.translatable("skyblocker.update.hover_text");
-                linkMessage.append(link.styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://modrinth.com/mod/skyblocker-liap/versions")).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText)))).append(linkMessageEnding);
-
-                MinecraftClient.getInstance().player.sendMessage(linkMessage, false);
+                MinecraftClient.getInstance().player.sendMessage(Text.translatable("skyblocker.update.updateText"), false);
             }
         });
     }

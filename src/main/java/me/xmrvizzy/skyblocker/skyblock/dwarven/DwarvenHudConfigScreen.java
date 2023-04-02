@@ -1,7 +1,6 @@
 package me.xmrvizzy.skyblocker.skyblock.dwarven;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
+import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.utils.RenderUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,8 +11,9 @@ import java.util.List;
 
 public class DwarvenHudConfigScreen extends Screen {
 
-    private int hudX = SkyblockerConfigOld.get().locations.dwarvenMines.dwarvenHud.x;
-    private int hudY = SkyblockerConfigOld.get().locations.dwarvenMines.dwarvenHud.y;
+    private int hudX = SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.x();
+    private int hudY = SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.y();
+
     protected DwarvenHudConfigScreen(Text title) {
         super(title);
     }
@@ -46,9 +46,9 @@ public class DwarvenHudConfigScreen extends Screen {
 
     @Override
     public void close() {
-        SkyblockerConfigOld.get().locations.dwarvenMines.dwarvenHud.x = hudX;
-        SkyblockerConfigOld.get().locations.dwarvenMines.dwarvenHud.y = hudY;
-        AutoConfig.getConfigHolder(SkyblockerConfigOld.class).save();
+        SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.x(hudX);
+        SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.y(hudY);
+        SkyblockerMod.getInstance().config.save();
         super.close();
     }
 }

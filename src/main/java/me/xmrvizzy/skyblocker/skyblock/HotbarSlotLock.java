@@ -1,7 +1,6 @@
 package me.xmrvizzy.skyblocker.skyblock;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
+import me.xmrvizzy.skyblocker.SkyblockerMod;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
@@ -22,7 +21,7 @@ public class HotbarSlotLock {
     }
 
     public static boolean isLocked(int slot) {
-        return SkyblockerConfigOld.get().general.lockedSlots.contains(slot);
+        return SkyblockerMod.getInstance().config.lockedSlots().contains(slot);
     }
 
     public static void handleDropSelectedItem(int slot, CallbackInfoReturnable<Boolean> cir) {
@@ -31,11 +30,11 @@ public class HotbarSlotLock {
 
     public static void handleInputEvents(ClientPlayerEntity player) {
         while (hotbarSlotLock.wasPressed()) {
-            List<Integer> lockedSlots = SkyblockerConfigOld.get().general.lockedSlots;
+            List<Integer> lockedSlots = SkyblockerMod.getInstance().config.lockedSlots();
             int selected = player.getInventory().selectedSlot;
             if (!isLocked(player.getInventory().selectedSlot)) lockedSlots.add(selected);
             else lockedSlots.remove(Integer.valueOf(selected));
-            AutoConfig.getConfigHolder(SkyblockerConfigOld.class).save();
+            SkyblockerMod.getInstance().config.save();
         }
     }
 }

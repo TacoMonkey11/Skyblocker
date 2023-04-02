@@ -1,6 +1,6 @@
 package me.xmrvizzy.skyblocker.mixin;
 
-import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
+import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.skyblock.BackpackPreview;
 import me.xmrvizzy.skyblocker.skyblock.item.WikiLookup;
 import me.xmrvizzy.skyblocker.skyblock.quicknav.QuickNav;
@@ -34,7 +34,7 @@ public abstract class HandledScreenMixin extends Screen {
     @Inject(method = "init()V", at = @At("TAIL"))
     private void skyblocker$init(CallbackInfo ci) {
         // quicknav
-        if (Utils.isOnSkyblock && SkyblockerConfigOld.get().quickNav.enableQuickNav) {
+        if (Utils.isOnSkyblock && SkyblockerMod.getInstance().config.enableQuickNav()) {
             String screenTitle = super.getTitle().getString().trim();
             List<QuickNavButton> buttons = QuickNav.init(screenTitle);
             for (QuickNavButton button : buttons) super.addDrawableChild(button);
@@ -55,7 +55,7 @@ public abstract class HandledScreenMixin extends Screen {
     @Inject(at = @At("HEAD"), method = "drawMouseoverTooltip", cancellable = true)
     public void skyblocker$drawMouseOverTooltip(MatrixStack matrices, int x, int y, CallbackInfo ci) {
         String title = this.getTitle().getString();
-        boolean shiftDown = SkyblockerConfigOld.get().general.backpackPreviewWithoutShift ^ Screen.hasShiftDown();
+        boolean shiftDown = SkyblockerMod.getInstance().config.backpackPreviewWithoutShift() ^ Screen.hasShiftDown();
         if (shiftDown && title.equals("Storage") && this.focusedSlot != null) {
             if (this.focusedSlot.inventory == this.client.player.getInventory()) return;
             if (BackpackPreview.renderPreview(matrices, this.focusedSlot.getIndex(), x, y)) ci.cancel();

@@ -101,11 +101,22 @@
   "text.config.skyblocker.enum.chatFilterResult.pass": "Disabled",
   "text.config.skyblocker.enum.chatFilterResult.filter": "Filter",
   "text.config.skyblocker.enum.chatFilterResult.action_bar": "Move to action bar",
-
-  "skyblocker.update.update_message": "§b[§6Skyblocker§b] §2There is a new version available!",
-  "skyblocker.update.update_link": " §2§nClick here§r",
-  "skyblocker.update.update_message_end" : " §ato find out about latest features.",
-  "skyblocker.update.hover_text": "Open Modrinth",
+  "skyblocker.update.updateText": [
+    "§b[§6Skyblocker§b] §2There is a new version available!",
+    {
+      "text": " §2§nClick here§r",
+      "color": "blue",
+      "clickEvent": {
+        "action": "open_url",
+        "value": "https://modrinth.com/mod/skyblocker-liap/versions"
+      },
+      "hoverEvent": {
+        "action": "show_text",
+        "value": "Open Modrinth"
+      }
+    },
+    " §ato find out about latest features."
+  ],
   "text.config.skyblocker.option.enableUpdateNotification": "Update Notification",
 
   "skyblocker.api.got_key": "§b[§6Skyblocker§b] §2Automatically set your API key!",
