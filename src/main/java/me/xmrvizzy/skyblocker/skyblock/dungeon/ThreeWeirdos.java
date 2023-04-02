@@ -2,7 +2,7 @@ package me.xmrvizzy.skyblocker.skyblock.dungeon;
 
 import me.xmrvizzy.skyblocker.chat.ChatFilterResult;
 import me.xmrvizzy.skyblocker.chat.ChatPatternListener;
-import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
+import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.text.Text;
@@ -17,7 +17,7 @@ public class ThreeWeirdos extends ChatPatternListener {
 
     @Override
     public ChatFilterResult state() {
-        return SkyblockerConfig.get().locations.dungeons.solveThreeWeirdos ? null : ChatFilterResult.PASS;
+        return SkyblockerConfigOld.get().locations.dungeons.solveThreeWeirdos ? null : ChatFilterResult.PASS;
     }
 
     @Override

@@ -1,8 +1,5 @@
 package me.xmrvizzy.skyblocker.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
@@ -10,8 +7,11 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.xmrvizzy.skyblocker.chat.ChatFilterResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Config(name = "skyblocker")
-public class SkyblockerConfig implements ConfigData {
+public class SkyblockerConfigOld implements ConfigData {
 
     @ConfigEntry.Category("general")
     @ConfigEntry.Gui.TransitiveObject
@@ -310,10 +310,10 @@ public class SkyblockerConfig implements ConfigData {
     }
 
     public static void init() {
-        AutoConfig.register(SkyblockerConfig.class, GsonConfigSerializer::new);
+        AutoConfig.register(SkyblockerConfigOld.class, GsonConfigSerializer::new);
     }
 
-    public static SkyblockerConfig get() {
-        return AutoConfig.getConfigHolder(SkyblockerConfig.class).getConfig();
+    public static SkyblockerConfigOld get() {
+        return AutoConfig.getConfigHolder(SkyblockerConfigOld.class).getConfig();
     }
 }

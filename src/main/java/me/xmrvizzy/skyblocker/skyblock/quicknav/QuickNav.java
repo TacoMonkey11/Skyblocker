@@ -2,7 +2,7 @@ package me.xmrvizzy.skyblocker.skyblock.quicknav;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
+import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.StringNbtReader;
@@ -16,7 +16,7 @@ public class QuickNav {
     private static final String dungeonHubIconNbt = "{id:\"minecraft:player_head\",Count:1,tag:{SkullOwner:{Id:[I;1605800870,415127827,-1236127084,15358548],Properties:{textures:[{Value:\"e3RleHR1cmVzOntTS0lOOnt1cmw6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzg5MWQ1YjI3M2ZmMGJjNTBjOTYwYjJjZDg2ZWVmMWM0MGExYjk0MDMyYWU3MWU3NTQ3NWE1NjhhODI1NzQyMSJ9fX0=\"}]}}}}";
     public static List<QuickNavButton> init(String screenTitle) {
         List<QuickNavButton> buttons = new ArrayList<>();
-        SkyblockerConfig.QuickNav data = SkyblockerConfig.get().quickNav;
+        SkyblockerConfigOld.QuickNav data = SkyblockerConfigOld.get().quickNav;
         try {
             if (data.button1.render) buttons.add(parseButton(data.button1, screenTitle, 0));
             if (data.button2.render) buttons.add(parseButton(data.button2, screenTitle, 1));
@@ -36,8 +36,8 @@ public class QuickNav {
         return buttons;
     }
 
-    private static QuickNavButton parseButton(SkyblockerConfig.QuickNavItem buttonInfo, String screenTitle, int id) throws CommandSyntaxException {
-        SkyblockerConfig.ItemData itemData = buttonInfo.item;
+    private static QuickNavButton parseButton(SkyblockerConfigOld.QuickNavItem buttonInfo, String screenTitle, int id) throws CommandSyntaxException {
+        SkyblockerConfigOld.ItemData itemData = buttonInfo.item;
         String nbtString = "{id:\"minecraft:" + itemData.itemName.toLowerCase(Locale.ROOT) + "\",Count:1";
         if (itemData.nbt.length() > 2) nbtString += "," + itemData.nbt;
         nbtString += "}";

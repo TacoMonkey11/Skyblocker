@@ -1,7 +1,7 @@
 package me.xmrvizzy.skyblocker.chat.filters;
 
 import me.xmrvizzy.skyblocker.chat.ChatFilterResult;
-import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
+import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
 
 public class MoltenWaveFilter extends SimpleChatFilter {
     public MoltenWaveFilter() {
@@ -10,6 +10,6 @@ public class MoltenWaveFilter extends SimpleChatFilter {
 
     @Override
     public ChatFilterResult state() {
-        return SkyblockerConfig.get().messages.hideMoltenWave;
+        return SkyblockerConfigOld.get().messages.hideMoltenWave;
     }
 }

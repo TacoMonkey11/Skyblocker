@@ -1,6 +1,6 @@
 package me.xmrvizzy.skyblocker.skyblock.dungeon.terminal;
 
-import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
+import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
 import me.xmrvizzy.skyblocker.container.ColorHighlight;
 import me.xmrvizzy.skyblocker.container.ContainerSolver;
 import net.minecraft.item.ItemStack;
@@ -16,7 +16,7 @@ public class StartsWithTerminal extends ContainerSolver {
 
     @Override
     public boolean isEnabled() {
-        return SkyblockerConfig.get().locations.dungeons.terminals.solveStartsWith;
+        return SkyblockerConfigOld.get().locations.dungeons.terminals.solveStartsWith;
     }
 
     @Override

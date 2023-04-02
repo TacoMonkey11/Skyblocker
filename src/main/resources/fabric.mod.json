@@ -17,9 +17,6 @@
   "entrypoints": {
     "client": [
       "me.xmrvizzy.skyblocker.SkyblockerInitializer"
-    ],
-    "modmenu": [
-      "me.xmrvizzy.skyblocker.config.modmenu.ModMenuEntry"
     ]
   },
   "mixins": [

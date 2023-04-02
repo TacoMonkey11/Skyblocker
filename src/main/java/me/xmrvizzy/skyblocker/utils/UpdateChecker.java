@@ -2,7 +2,7 @@ package me.xmrvizzy.skyblocker.utils;
 
 import com.google.gson.*;
 import me.xmrvizzy.skyblocker.SkyblockerMod;
-import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
+import me.xmrvizzy.skyblocker.config.SkyblockerConfigOld;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.*;
@@ -22,7 +22,7 @@ public class UpdateChecker {
     public static VersionNumber localVersion = null;
     public static VersionNumber latestVersion = null;
     public static boolean shouldUpdate(){
-        if (SkyblockerConfig.get().general.enableUpdateNotification){
+        if (SkyblockerConfigOld.get().general.enableUpdateNotification){
             new Thread(() -> {
                 try{
                     URL url = new URL("https://api.modrinth.com/v2/project/skyblocker-liap/version");

@@ -1,5 +1,6 @@
 package me.xmrvizzy.skyblocker;
 
+import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
 import me.xmrvizzy.skyblocker.container.ContainerSolverManager;
 import me.xmrvizzy.skyblocker.discord.DiscordRPCManager;
 import me.xmrvizzy.skyblocker.skyblock.BackpackPreview;
@@ -17,6 +18,8 @@ public class SkyblockerMod {
     public final ContainerSolverManager containerSolverManager = new ContainerSolverManager();
     public final DiscordRPCManager discordRPCManager = new DiscordRPCManager();
     public final StatusBarTracker statusBarTracker = new StatusBarTracker();
+
+    public final SkyblockerConfig config = SkyblockerConfig.createAndLoad();
 
     private SkyblockerMod() {
         scheduler.scheduleCyclic(Utils::sbChecker, 20);
