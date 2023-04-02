@@ -14,6 +14,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Config(wrapperName = "SkyblockerConfig", name = SkyblockerMod.NAMESPACE)
 public class SkyblockerConfigModel {
+
+    //
+    // GENERAL CONFIGURATION
+    //
+
     @SectionHeader("general")
     public boolean enableUpdateNotification = true;
     public boolean backpackPreviewWithoutShift = false;
@@ -30,12 +35,20 @@ public class SkyblockerConfigModel {
     @ExcludeFromScreen
     public List<Integer> lockedSlots = new ArrayList<>();
 
+    //
+    // LOCATION CONFIGURATION
+    //
+
     @SectionHeader("locations")
     @Nest
     public Dungeons dungeons = new Dungeons();
 
     @Nest
     public DwarvenMines dwarvenMines = new DwarvenMines();
+
+    //
+    // FILTER CONFIGURATION
+    //
 
     @SectionHeader("messages")
     public ChatFilterResult hideAbility = ChatFilterResult.PASS;
@@ -49,11 +62,19 @@ public class SkyblockerConfigModel {
     public ChatFilterResult hideAutopet = ChatFilterResult.PASS;
     public boolean hideMana = false;
 
+    //
+    // DISCORD RPC CONFIGURATION
+    //
+
     @SectionHeader("richPresence")
     public boolean enableRichPresence = false;
     public Info info = Info.LOCATION;
     public boolean cycleMode = false;
     public String customMessage = "";
+
+    //
+    // QUICK NAVAGATION CONFIGURATION
+    //
 
     @SectionHeader("quickNav")
     public boolean enableQuickNav = true;
@@ -82,6 +103,10 @@ public class SkyblockerConfigModel {
     public QuickNavItem button11 = new QuickNavItem(true, new ItemData("anvil"), "Anvil", "/anvil");
     @Nest
     public QuickNavItem button12 = new QuickNavItem(true, new ItemData("crafting_table"), "Craft Item", "/craft");
+
+    //
+    // ENUMS AND CLASSES
+    //
 
     public static class QuickNavItem {
         public QuickNavItem(Boolean render, ItemData itemData, String uiTitle, String clickEvent) {
@@ -160,7 +185,7 @@ public class SkyblockerConfigModel {
     public enum Average {
         ONE_DAY,
         THREE_DAY,
-        BOTH;
+        BOTH
     }
 
     public static class ItemTooltip {
