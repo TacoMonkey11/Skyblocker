@@ -1,14 +1,21 @@
 package me.xmrvizzy.skyblocker.skyblock.dwarven;
 
+import io.wispforest.owo.ui.component.Components;
+import io.wispforest.owo.ui.component.LabelComponent;
+import io.wispforest.owo.ui.container.Containers;
+import io.wispforest.owo.ui.container.FlowLayout;
+import io.wispforest.owo.ui.core.Insets;
+import io.wispforest.owo.ui.core.Positioning;
+import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.Surface;
+import io.wispforest.owo.ui.hud.Hud;
 import me.xmrvizzy.skyblocker.SkyblockerMod;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import me.xmrvizzy.skyblocker.config.SkyblockerGuiConfigScreen;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +28,9 @@ public class DwarvenHud {
 
 
     public static final MinecraftClient client = MinecraftClient.getInstance();
+    public static final Identifier HUD_ID = new Identifier(SkyblockerMod.NAMESPACE, "dwarven_hud");
     public static List<Commission> commissionList = new ArrayList<>();
+    public static Text commissionListText = Text.empty();
 
 
     public static final List<Pattern> COMMISSIONS = Stream.of(
@@ -39,35 +48,14 @@ public class DwarvenHud {
             "Chest Looter"
             ).map(s -> Pattern.compile("^.*(" + s + "): (\\d+\\.?\\d*%|DONE)"))
             .collect(Collectors.toList());
+
     public static void init() {
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("skyblocker")
-                .then(ClientCommandManager.literal("hud")
-                        .then(ClientCommandManager.literal("dwarven")
-                                .executes(context -> {
-                                    client.send(() -> client.setScreen(new DwarvenHudConfigScreen(Text.of("Dwarven HUD Config"))));
-                                    return 1;
-                                })))));
-
-        HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
-            if (!SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.enabled() || client.player == null || commissionList.isEmpty()) return;
-            render(matrixStack, SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.x(), SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.y(), commissionList);
-        });
+        Hud.add(new Identifier(SkyblockerMod.NAMESPACE, "dwarven_hud"), () -> Containers.verticalFlow(Sizing.content(), Sizing.content()).positioning(Positioning.absolute(SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.x(), SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.y())));
     }
-
-    public static void render(MatrixStack matrixStack, int hudX, int hudY, List<Commission> commissions) {
-        if (commissions.size() > 0){
-            if (SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.enableBackground())
-                DrawableHelper.fill(matrixStack, hudX, hudY, hudX + 200, hudY + (20 * commissions.size()), 0x64000000);
-            int y = 0;
-            for (Commission commission : commissions) {
-                client.textRenderer.drawWithShadow(matrixStack, Text.literal(commission.commission).styled(style -> style.withColor(Formatting.AQUA)).append(Text.literal(": " + commission.progression).styled(style -> style.withColor(Formatting.GREEN))), hudX + 5, hudY + y + 5, 0xFFFFFFFF);
-                y += 20;
-            }
-        }
-    }
-
     public static void update() {
         commissionList = new ArrayList<>();
+        MutableText commissionText = Text.empty();
+        FlowLayout hud = (FlowLayout) Hud.getComponent(HUD_ID);
         if (client.player == null || !SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.enabled()) return;
 
         client.getNetworkHandler().getPlayerList().forEach(playerListEntry -> {
@@ -81,6 +69,38 @@ public class DwarvenHud {
                 }
             }
         });
+
+        for (Commission commission : commissionList) {
+            commissionText.append(styleCommissionText(commission));
+            if (commissionList.size() != commissionList.indexOf(commission) + 1)
+                commissionText.append("\n");
+        }
+        if (commissionText.equals(Text.empty()) || client.options.debugEnabled || client.currentScreen instanceof SkyblockerGuiConfigScreen) {
+            hud.clearChildren().surface(Surface.BLANK);
+            return;
+        }
+
+        hud.positioning(Positioning.absolute(SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.x(), SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.y())).padding(Insets.of(10));
+
+        if (SkyblockerMod.getInstance().config.dwarvenMines.dwarvenHud.enableBackground())
+            hud.surface(Surface.PANEL);
+        else
+            hud.surface(Surface.BLANK);
+
+        hud.clearChildren();
+        hud.child(Components.label(commissionText).id("commission_hud_text"));
+    }
+
+    public static LabelComponent getExampleComponent() {
+        Commission testCommission1 = new Commission("Test Commission 1", "0%");
+        Commission testCommission2 = new Commission("Test Commission 2", "DONE");
+        Commission testCommission3 = new Commission("Test Commission 3", "50%");
+
+        return (LabelComponent) Components.label(styleCommissionText(testCommission1).append("\n").append(styleCommissionText(testCommission2)).append("\n").append(styleCommissionText(testCommission3))).id("commission_hud_text").margins(Insets.of(10));
+    }
+
+    public static MutableText styleCommissionText(Commission commission) {
+        return Text.literal(commission.commission).styled(style -> style.withColor(Formatting.AQUA)).append(Text.literal(": " + commission.progression).styled(style -> style.withColor(Formatting.GREEN)));
     }
 
     public static class Commission{

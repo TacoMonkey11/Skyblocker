@@ -106,7 +106,7 @@
                             <positioning type="relative">0,50</positioning>
                         </flow-layout>
 
-                        <button id="preview-button">
+                        <button id="configure-gui-button">
                             <text translate="true">text.config.skyblocker.button.configureGui</text>
                             <sizing>
                                 <horizontal method="fill">12</horizontal>
