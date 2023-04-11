@@ -1,7 +1,7 @@
 package me.xmrvizzy.skyblocker.mixin;
 
 import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FarmlandBlock;
@@ -22,7 +22,7 @@ public abstract class FarmlandBlockMixin extends Block {
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void skyblocker$onGetOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (Utils.isOnSkyblock && SkyblockerConfig.get().general.hitbox.oldFarmlandHitbox)
+        if (SidebarWrapper.onSkyblock() && SkyblockerConfig.get().general.hitbox.oldFarmlandHitbox)
             cir.setReturnValue(Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 16.0, 16.0));
     }
 

@@ -5,7 +5,7 @@ import me.xmrvizzy.skyblocker.skyblock.BackpackPreview;
 import me.xmrvizzy.skyblocker.skyblock.item.WikiLookup;
 import me.xmrvizzy.skyblocker.skyblock.quicknav.QuickNav;
 import me.xmrvizzy.skyblocker.skyblock.quicknav.QuickNavButton;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -34,7 +34,7 @@ public abstract class HandledScreenMixin extends Screen {
     @Inject(method = "init()V", at = @At("TAIL"))
     private void skyblocker$init(CallbackInfo ci) {
         // quicknav
-        if (Utils.isOnSkyblock && SkyblockerConfig.get().quickNav.enableQuickNav) {
+        if (SidebarWrapper.onSkyblock() && SkyblockerConfig.get().quickNav.enableQuickNav) {
             String screenTitle = super.getTitle().getString().trim();
             List<QuickNavButton> buttons = QuickNav.init(screenTitle);
             for (QuickNavButton button : buttons) super.addDrawableChild(button);

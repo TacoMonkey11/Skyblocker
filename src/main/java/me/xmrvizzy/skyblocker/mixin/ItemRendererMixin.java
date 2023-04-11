@@ -1,19 +1,9 @@
 package me.xmrvizzy.skyblocker.mixin;
 
-import java.awt.Color;
-import java.util.regex.Pattern;
-
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
 import me.xmrvizzy.skyblocker.utils.ItemUtils;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -21,13 +11,21 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.ColorHelper;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.awt.*;
+import java.util.regex.Pattern;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
     @Inject(method = "renderGuiItemOverlay(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At("HEAD"))
     public void skyblocker$renderItemBar(MatrixStack matrices, TextRenderer renderer, ItemStack stack, int x, int y, @Nullable String countLabel, CallbackInfo ci) {
 
-        if (Utils.isOnSkyblock && SkyblockerConfig.get().locations.dwarvenMines.enableDrillFuel) {
+        if (SidebarWrapper.onSkyblock() && SkyblockerConfig.get().locations.dwarvenMines.enableDrillFuel) {
             if (!stack.isEmpty()) {
                 NbtCompound tag = stack.getNbt();
                 if (tag != null && tag.contains("ExtraAttributes")) {

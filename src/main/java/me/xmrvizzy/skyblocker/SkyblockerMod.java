@@ -7,7 +7,7 @@ import me.xmrvizzy.skyblocker.skyblock.StatusBarTracker;
 import me.xmrvizzy.skyblocker.skyblock.dungeon.DungeonBlaze;
 import me.xmrvizzy.skyblocker.skyblock.dwarven.DwarvenHud;
 import me.xmrvizzy.skyblocker.utils.Scheduler;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 
 public class SkyblockerMod {
     public static final String NAMESPACE = "skyblocker";
@@ -18,11 +18,11 @@ public class SkyblockerMod {
     public final StatusBarTracker statusBarTracker = new StatusBarTracker();
 
     private SkyblockerMod() {
-        scheduler.scheduleCyclic(Utils::sbChecker, 20);
         scheduler.scheduleCyclic(DiscordRPCManager::update, 100);
         scheduler.scheduleCyclic(DungeonBlaze::update, 4);
         scheduler.scheduleCyclic(BackpackPreview::tick, 50);
         scheduler.scheduleCyclic(DwarvenHud::update, 40);
+        scheduler.scheduleCyclic(SidebarWrapper::update, 20);
     }
 
     public static SkyblockerMod getInstance() {

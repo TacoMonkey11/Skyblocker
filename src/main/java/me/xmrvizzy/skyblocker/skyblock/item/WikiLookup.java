@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
@@ -48,7 +48,7 @@ public class WikiLookup {
     }
 
     public static void openWiki(Slot slot) {
-        if (Utils.isOnSkyblock) {
+        if (SidebarWrapper.onSkyblock()) {
             id = getSkyblockId(slot);
             try {
                 //Setting up a connection with the repo

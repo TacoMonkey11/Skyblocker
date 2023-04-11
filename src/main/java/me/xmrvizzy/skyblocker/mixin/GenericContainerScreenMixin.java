@@ -1,7 +1,7 @@
 package me.xmrvizzy.skyblocker.mixin;
 
 import me.xmrvizzy.skyblocker.SkyblockerMod;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -25,7 +25,7 @@ public abstract class GenericContainerScreenMixin extends HandledScreen<GenericC
     @Override
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
         super.drawForeground(matrices, mouseX, mouseY);
-        if (Utils.isOnSkyblock)
+        if (SidebarWrapper.onSkyblock())
             SkyblockerMod.getInstance().containerSolverManager.onDraw(matrices, this.handler.slots.subList(0, rows * 9));
     }
 }

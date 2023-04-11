@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
+import me.xmrvizzy.skyblocker.utils.SkyblockEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
@@ -39,10 +41,11 @@ public class PriceInfoTooltip {
     private static JsonObject lowestPricesJson;
     private static JsonObject isMuseumJson;
     private static boolean nullMsgSend = false;
+    private static boolean isInjected = false;
     private final static Gson gson = new Gson();
 
     public static void onInjectTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {
-        if (!Utils.isOnSkyblock || client.player == null) return;
+        if (!SidebarWrapper.onSkyblock() || client.player == null) return;
 
         String name = getInternalNameFromNBT(stack);
         if (name == null) return;
@@ -277,7 +280,7 @@ public class PriceInfoTooltip {
     public static int minute = -1;
     public static void init() {
         skyblocker.scheduler.scheduleCyclic(() -> {
-            if (!Utils.isOnSkyblock && 0 < minute++) {
+            if (!SidebarWrapper.onSkyblock() && 0 < minute++) {
                 nullMsgSend = false;
                 return;
             }
@@ -309,6 +312,13 @@ public class PriceInfoTooltip {
             CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0]))
                     .whenComplete((unused, throwable) -> nullMsgSend = false);
         }, 1200);
+
+        SkyblockEvents.JOIN.register(() -> {
+            if (isInjected) return;
+            isInjected = true;
+            ItemTooltipCallback.EVENT.register(PriceInfoTooltip::onInjectTooltip);
+        });
+
     }
 
     private static void downloadAvgPrices(SkyblockerConfig.Average type) {

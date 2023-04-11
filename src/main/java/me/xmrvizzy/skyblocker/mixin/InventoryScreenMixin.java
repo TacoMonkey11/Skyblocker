@@ -2,7 +2,7 @@ package me.xmrvizzy.skyblocker.mixin;
 
 import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
 import me.xmrvizzy.skyblocker.skyblock.itemlist.ItemListWidget;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +19,7 @@ public abstract class InventoryScreenMixin {
             )
     )
     RecipeBookWidget skyblocker$constructor() {
-        if (Utils.isOnSkyblock && SkyblockerConfig.get().general.itemList.enableItemList)
+        if (SidebarWrapper.onSkyblock() && SkyblockerConfig.get().general.itemList.enableItemList)
             return new ItemListWidget();
         else
             return new RecipeBookWidget();

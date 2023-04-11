@@ -3,7 +3,7 @@ package me.xmrvizzy.skyblocker.skyblock.dungeon;
 import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.chat.ChatFilterResult;
 import me.xmrvizzy.skyblocker.chat.ChatPatternListener;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
@@ -27,7 +27,7 @@ public class Reparty extends ChatPatternListener {
         super("^(?:You are not currently in a party\\.|Party (?:Membe|Moderato)rs(?: \\(([0-9]+)\\)|:( .*)))$");
         this.repartying = false;
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("rp").executes(context -> {
-            if (!Utils.isOnSkyblock || this.repartying || client.player == null) return 0;
+            if (!SidebarWrapper.onSkyblock() || this.repartying || client.player == null) return 0;
             this.repartying = true;
             client.player.networkHandler.sendCommand("p list");
             return 0;

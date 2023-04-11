@@ -1,9 +1,9 @@
 package me.xmrvizzy.skyblocker.skyblock.dungeon;
 
 import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
-import me.xmrvizzy.skyblocker.utils.Utils;
-import me.xmrvizzy.skyblocker.utils.color.QuadColor;
 import me.xmrvizzy.skyblocker.utils.RenderUtils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
+import me.xmrvizzy.skyblocker.utils.color.QuadColor;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
@@ -21,7 +21,7 @@ public class DungeonBlaze {
     
     public static void update() {
         ClientWorld world = MinecraftClient.getInstance().world;
-        if (world == null || !Utils.isInDungeons) return;
+        if (world == null || !SidebarWrapper.inDungeons()) return;
         if(!renderHooked){
 
             WorldRenderEvents.END.register(DungeonBlaze::blazeRenderer);

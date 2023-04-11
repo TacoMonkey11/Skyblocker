@@ -3,7 +3,7 @@ package me.xmrvizzy.skyblocker.mixin;
 import me.xmrvizzy.skyblocker.SkyblockerMod;
 import me.xmrvizzy.skyblocker.container.ContainerSolverManager;
 import me.xmrvizzy.skyblocker.skyblock.HotbarSlotLock;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -29,13 +29,13 @@ public abstract class MinecraftClientMixin {
 
     @Inject(method = "handleInputEvents", at = @At("HEAD"))
     public void skyblocker$handleInputEvents(CallbackInfo ci) {
-        if (Utils.isOnSkyblock) HotbarSlotLock.handleInputEvents(player);
+        if (SidebarWrapper.onSkyblock()) HotbarSlotLock.handleInputEvents(player);
     }
 
     @Inject(method = "setScreen", at = @At("HEAD"))
     public void skyblocker$onSetScreen(Screen screen, CallbackInfo ci) {
         ContainerSolverManager manager = SkyblockerMod.getInstance().containerSolverManager;
-        if (Utils.isOnSkyblock && screen instanceof GenericContainerScreen)
+        if (SidebarWrapper.onSkyblock() && screen instanceof GenericContainerScreen)
             manager.onSetScreen((GenericContainerScreen) screen);
         else
             manager.clearScreen();

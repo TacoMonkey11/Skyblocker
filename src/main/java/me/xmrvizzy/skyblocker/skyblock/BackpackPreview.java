@@ -2,7 +2,7 @@ package me.xmrvizzy.skyblocker.skyblock;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.xmrvizzy.skyblocker.SkyblockerMod;
-import me.xmrvizzy.skyblocker.utils.Utils;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -41,8 +41,8 @@ public class BackpackPreview extends DrawableHelper {
     private static Path save_dir = null;
 
     public static void tick() {
-        Utils.sbChecker(); // force update isOnSkyblock to prevent crash on disconnect
-        if (Utils.isOnSkyblock) {
+        SidebarWrapper.update(); // force update to prevent crash on disconnect
+        if (SidebarWrapper.onSkyblock()) {
             // save all dirty storages
             saveStorage();
             // update save dir based on uuid and sb profile

@@ -3,8 +3,8 @@ package me.xmrvizzy.skyblocker.discord;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.xmrvizzy.skyblocker.config.SkyblockerConfig;
+import me.xmrvizzy.skyblocker.utils.SidebarWrapper;
 import me.xmrvizzy.skyblocker.utils.SkyblockEvents;
-import me.xmrvizzy.skyblocker.utils.Utils;
 import meteordevelopment.discordipc.DiscordIPC;
 import meteordevelopment.discordipc.RichPresence;
 import org.slf4j.Logger;
@@ -22,6 +22,7 @@ public class DiscordRPCManager {
         SkyblockEvents.LEAVE.register(DiscordIPC::stop);
         SkyblockEvents.JOIN.register(() -> {
             startTimeStamp = System.currentTimeMillis();
+            if (!SkyblockerConfig.get().richPresence.enableRichPresence) return;
             if (DiscordIPC.start(934607927837356052L, null)) {
                 DiscordIPC.setActivity(buildPresence());
                 LOGGER.info("Discord RPC started");
@@ -37,7 +38,7 @@ public class DiscordRPCManager {
             SkyblockerConfig.get().richPresence.customMessage = "Playing Skyblock";
             AutoConfig.getConfigHolder(SkyblockerConfig.class).save();
         }
-        if ((!Utils.isOnSkyblock || !SkyblockerConfig.get().richPresence.enableRichPresence) && DiscordIPC.isConnected()){
+        if ((!SidebarWrapper.onSkyblock() || !SkyblockerConfig.get().richPresence.enableRichPresence) && DiscordIPC.isConnected()){
             DiscordIPC.stop();
             LOGGER.info("Discord RPC stopped");
             return;
@@ -59,15 +60,15 @@ public class DiscordRPCManager {
         String info = null;
         if (!SkyblockerConfig.get().richPresence.cycleMode){
             switch (SkyblockerConfig.get().richPresence.info){
-                case BITS -> info = "Bits: " + DECIMAL_FORMAT.format(Utils.getBits());
-                case PURSE -> info = "Purse: " + DECIMAL_FORMAT.format(Utils.getPurse());
-                case LOCATION -> info = "⏣ " + Utils.getLocation();
+                case BITS -> info = "Bits: " + DECIMAL_FORMAT.format(SidebarWrapper.getBits());
+                case PURSE -> info = "Purse: " + DECIMAL_FORMAT.format(SidebarWrapper.getPurse());
+                case LOCATION -> info = "⏣ " + SidebarWrapper.getLocation();
             }
         } else if (SkyblockerConfig.get().richPresence.cycleMode){
             switch (cycleCount){
-                case 0 -> info = "Bits: " + DECIMAL_FORMAT.format(Utils.getBits());
-                case 1 -> info = "Purse: " + DECIMAL_FORMAT.format(Utils.getPurse());
-                case 2 -> info = "⏣ " + Utils.getLocation();
+                case 0 -> info = "Bits: " + DECIMAL_FORMAT.format(SidebarWrapper.getBits());
+                case 1 -> info = "Purse: " + DECIMAL_FORMAT.format(SidebarWrapper.getPurse());
+                case 2 -> info = "⏣ " + SidebarWrapper.getLocation();
             }
         }
         return info;
