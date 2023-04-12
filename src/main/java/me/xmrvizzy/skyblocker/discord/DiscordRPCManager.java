@@ -24,7 +24,6 @@ public class DiscordRPCManager {
             startTimeStamp = System.currentTimeMillis();
             if (!SkyblockerConfig.get().richPresence.enableRichPresence) return;
             if (DiscordIPC.start(934607927837356052L, null)) {
-                DiscordIPC.setActivity(buildPresence());
                 LOGGER.info("Discord RPC started");
             } else {
                 LOGGER.error("Discord RPC failed to start");
@@ -33,6 +32,7 @@ public class DiscordRPCManager {
     }
 
     public static void update(){
+        if (!SidebarWrapper.onSkyblock()) return;
         // If the custom message is empty, discord will keep the last message, this is can serve as a default if the user doesn't want a custom message
         if (SkyblockerConfig.get().richPresence.customMessage.isEmpty()) {
             SkyblockerConfig.get().richPresence.customMessage = "Playing Skyblock";

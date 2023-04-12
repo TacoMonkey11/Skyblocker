@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SidebarWrapper {
     private static boolean onSkyblock = false;
@@ -19,7 +21,6 @@ public class SidebarWrapper {
 
     public static void update() {
         sidebar = getSidebar();
-        System.out.println(onSkyblock());
     }
 
     public static List<String> getSidebar() {
@@ -46,7 +47,7 @@ public class SidebarWrapper {
             }
             return lines;
         } catch (NullPointerException e) {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -69,25 +70,45 @@ public class SidebarWrapper {
     }
 
     public static boolean inDungeons() {
-        if (sidebar == null || sidebar.size() < 1) return false;
         return onSkyblock && sidebar.toString().contains("The Catacombs");
     }
 
     public static String getLocation() {
-        if (sidebar == null || sidebar.size() < 1) return null;
         Optional<String> location = sidebar.stream().filter(s -> s.contains("⏣")).findFirst();
         return location.map(s -> s.replace("⏣", "").strip()).orElse(null);
     }
 
     public static double getPurse() {
-        if (sidebar == null || sidebar.size() < 1) return 0;
-        Optional<String> purse = sidebar.stream().filter(s -> s.contains("Piggy:") || s.contains("Purse:")).findFirst();
-        return purse.map(s -> Double.parseDouble(s.replaceAll("[^0-9.]", "").strip())).orElse(0.0);
+        return sidebar.stream().filter(SidebarRegex.PURSE::matches).map(SidebarRegex.PURSE::getMatch).findFirst().map(s -> Double.parseDouble(s.replace(",", "").strip())).orElse(0.0);
     }
 
     public static int getBits() {
-        if (sidebar == null || sidebar.size() < 1) return 0;
         Optional<String> bits = sidebar.stream().filter(s -> s.contains("Bits:")).findFirst();
         return bits.map(s -> Integer.parseInt(s.replaceAll("[^0-9]", "").strip())).orElse(0);
+    }
+
+    public static String getInGameDate() {
+        Optional<String> date = sidebar.stream().filter(s -> s.contains("⏣")).findFirst();
+        return date.map(s -> s.replace("⏣", "").strip()).orElse(null);
+    }
+
+    public enum SidebarRegex {
+        PURSE(Pattern.compile("(?:Piggy:|Purse:) (.*)")),
+        BITS(Pattern.compile("Bits: .*"));
+
+        private final Pattern pattern;
+
+        SidebarRegex(Pattern pattern) {
+            this.pattern = pattern;
+        }
+
+        public boolean matches(String s) {
+            return this.pattern.matcher(s).find();
+        }
+
+        public String getMatch(String s) {
+            Matcher matcher = this.pattern.matcher(s);
+            return matcher.find() ? matcher.group(1) : null;
+        }
     }
 }
